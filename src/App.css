@@ -47,3 +47,6 @@
 .butn:active {
   transform: scale(0.98);
 }
+.sidebar{
+  display:flex;
+}

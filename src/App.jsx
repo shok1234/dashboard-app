@@ -35,11 +35,21 @@ function App() {
       
       {isLoggedIn ? (
         <>
-        <h2 className='dashb'>Welcome, {loggedUser}</h2>
-        <p>You are successfully logged in 🎉</p>
+        <div className='dashboard'>
+          <div className='sidebar'>
+          <h2>Dashboard</h2>
+        <h2>Profile</h2>
         <button className='butn' onClick={handleLogout}>
         Log out
       </button>
+          </div>
+          <div className='main'>
+           <h2 className='dashb'>Welcome, {loggedUser}</h2>
+        <p>You are successfully logged in 🎉</p>
+          </div>
+        </div>
+        
+        
         </>
         
       ):(
