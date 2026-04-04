@@ -7,8 +7,10 @@ function App() {
   const [isLoggedIn,setisLoggedIn]=useState(false);
   const [error,setError]=useState("");
   const [loggedUser, setLoggedUser] = useState("");
+  const [page, setPage] = useState("dashboard");
+  const [users, setUsers] = useState([]);
   const handleLogin=()=>{
-     if(email==="" && password===""){
+     if(!email || !password){
       setError("Please fill the fields first");
       return;
     }
@@ -26,29 +28,53 @@ function App() {
     setEmail("");
     setPassword("");
     setLoggedUser("");
-  
   }
-
+  const fetchusers=async()=>{
+    const res=await fetch("https://jsonplaceholder.typicode.com/users");
+    const data=await res.json();
+    setUsers(data);
+  }
+  
   return (
     <>
-    
-      
+     
       {isLoggedIn ? (
         <>
         <div className='dashboard'>
           <div className='sidebar'>
-          <h2>Dashboard</h2>
-        <h2>Profile</h2>
+          <button className='btun' onClick={()=>setPage("dashboard")}>Dashboard</button>
+        <button className='btun' onClick={()=>setPage("profile")}>Profile</button>
+        <button className='btun' onClick={()=>{setPage("users");fetchusers();}}>Users</button>
         <button className='butn' onClick={handleLogout}>
         Log out
       </button>
           </div>
           <div className='main'>
-           <h2 className='dashb'>Welcome, {loggedUser}</h2>
+            {page === "dashboard" &&(
+              <div>
+              <h2 className='dashb'>Welcome, {loggedUser}</h2>
         <p>You are successfully logged in 🎉</p>
+        </div>
+            )}
+            {page ==="profile" && (
+              <div>
+                <h2>Email: {loggedUser}</h2>
+                <h2>Status: Active</h2>
+              </div>
+            )}
+            {page ==="users" &&(
+              <div>
+             { users.map(user => (
+                <div key={user.id}>
+                <p>{user.name}</p>
+                <p>{user.emial}</p>
+                </div>
+               ))
+            }
+              </div>
+            )}
           </div>
         </div>
-        
         
         </>
         
