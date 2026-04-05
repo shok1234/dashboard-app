@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import { fetchUsersApi } from "./services/api";
+import Sidebar from "./components/Sidebar";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import Users from "./pages/Users";
+import Login from "./components/Login";
 import './App.css'
 
 function App() {
@@ -30,114 +36,62 @@ function App() {
     setEmail("");
     setPassword("");
     setLoggedUser("");
+    setPage("dashboard");
+    setUsers([]);
+    setSelectedUser(null);
   }
-  const fetchusers=async()=>{
+  const fetchUsers=async()=>{
+    if(users.length >0 ) return;
     setLoading(true);
-    const res=await fetch("https://jsonplaceholder.typicode.com/users");
-    const data=await res.json();
+    try{
+    const data= await fetchUsersApi();
     setUsers(data);
+    }catch(err){
+      console.error(err);
+    }finally{
     setLoading(false);
+    }
   }
 
   
   return (
     <>
-     
       {isLoggedIn ? (
-        <>
         <div className='dashboard'>
-          <div className='sidebar'>
-          <button className='butn' onClick={()=>setPage("dashboard")}>Dashboard</button>
-        <button className='butn' onClick={()=>setPage("profile")}>Profile</button>
-        <button className='butn' onClick={()=>{setPage("users");fetchusers();}}>Users</button>
-        <button className='butn' onClick={handleLogout}>
-        Log out
-      </button>
-          </div>
+          <Sidebar
+          setPage={(newpage)=>{
+            setPage(newpage);
+          if(newpage !=="users"){
+            setSelectedUser(null);
+          }}}
+          fetchUsers={fetchUsers}
+          handleLogout={handleLogout}
+          setSelectedUser={setSelectedUser}
+          />
           <div className='main'>
-            {page === "dashboard" &&(
-              <div>
-              <h2 className='dashb'>Welcome, {loggedUser}</h2>
-        <p>You are successfully logged in 🎉</p>
-        </div>
-            )}
-            {page ==="profile" && (
-              <div>
-                <h2>Email: {loggedUser}</h2>
-                <h2>Status: Active</h2>
-              </div>
-            )}
-            {loading && <p>Loading users...</p>}
-           
-            {page ==="users" &&(
-              <div>
-                <div className='usersContainer'>
-             { users.map(user => (
-                <div className={selectedUser && selectedUser.id ===user.id
-                  ? "card active"
-                  :"card"
-                } key={user.id}
-                onClick={()=>setSelectedUser(user)}>
-                <h3>{user.name}</h3>
-                <p>{user.email}</p>
-                 
-                </div>
-                
-               ))}
-              
-             </div>
-             {selectedUser ?(
-                <div className='cardt'>    
-                <p>{selectedUser.name}</p>
-                <p>{selectedUser.email}</p>
-                <p>{selectedUser.phone}</p>
-                <button className="butn"onClick={()=>setSelectedUser(null)}>Close details</button>
-                </div>
-                
-               
-               ):(
-                <p className='psee'>Click a user to see details</p>
-               )}
-              </div>
-            )}
-             
-      
-            
+            {page === "dashboard" && <Dashboard loggedUser={loggedUser}/>}
+            {page ==="profile" &&  <Profile loggedUser={loggedUser}/> }
+             {page === "users" && (
+              <Users
+              users={users}
+              selectedUser={selectedUser}
+              setSelectedUser={setSelectedUser}
+              loading={loading}
+             />
+             )}
           </div>
-        </div>
-        
-        </>
-        
+           </div>
       ):(
-        <div className='divofoutput'>
-      <input  className='inpu'
-      placeholder='Email'
-      value={email}
-      onChange={(e)=> {
-        setEmail(e.target.value); setError("");}}
+      <Login 
+      email={email}
+      password={password}
+      setEmail={setEmail}
+      setPassword={setPassword}
+      handleLogin={handleLogin}
+      error={error}
       />
-      <input 
-      className='inpu'
-      type='password'
-      placeholder='Password'
-      value={password}
-      onChange={(e)=> {setPassword(e.target.value); setError("");}}/>
-      <button className='butn' onClick={handleLogin}>
-      Login
-      </button>
-      {error && 
-      
-      <p style={{color: "red"}}>
-        {error}
-        </p>}
-        
-      </div>
-
       )}
-
-
     </>
-  )
-}
+  )}
 
 export default App
