@@ -10,6 +10,7 @@ function App() {
   const [page, setPage] = useState("dashboard");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedUser,setSelectedUser]=useState(null);
   const handleLogin=()=>{
      if(!email || !password){
       setError("Please fill the fields first");
@@ -31,11 +32,13 @@ function App() {
     setLoggedUser("");
   }
   const fetchusers=async()=>{
+    setLoading(true);
     const res=await fetch("https://jsonplaceholder.typicode.com/users");
     const data=await res.json();
     setUsers(data);
     setLoading(false);
   }
+
   
   return (
     <>
@@ -44,9 +47,9 @@ function App() {
         <>
         <div className='dashboard'>
           <div className='sidebar'>
-          <button className='btun' onClick={()=>setPage("dashboard")}>Dashboard</button>
-        <button className='btun' onClick={()=>setPage("profile")}>Profile</button>
-        <button className='btun' onClick={()=>{setPage("users");fetchusers();}}>Users</button>
+          <button className='butn' onClick={()=>setPage("dashboard")}>Dashboard</button>
+        <button className='butn' onClick={()=>setPage("profile")}>Profile</button>
+        <button className='butn' onClick={()=>{setPage("users");fetchusers();}}>Users</button>
         <button className='butn' onClick={handleLogout}>
         Log out
       </button>
@@ -64,21 +67,41 @@ function App() {
                 <h2>Status: Active</h2>
               </div>
             )}
+            {loading && <p>Loading users...</p>}
            
             {page ==="users" &&(
               <div>
                 <div className='usersContainer'>
              { users.map(user => (
-                <div className="card" key={user.id}>
-                   
+                <div className={selectedUser && selectedUser.id ===user.id
+                  ? "card active"
+                  :"card"
+                } key={user.id}
+                onClick={()=>setSelectedUser(user)}>
                 <h3>{user.name}</h3>
                 <p>{user.email}</p>
+                 
                 </div>
-               
+                
                ))}
+              
              </div>
+             {selectedUser ?(
+                <div className='cardt'>    
+                <p>{selectedUser.name}</p>
+                <p>{selectedUser.email}</p>
+                <p>{selectedUser.phone}</p>
+                <button className="butn"onClick={()=>setSelectedUser(null)}>Close details</button>
+                </div>
+                
+               
+               ):(
+                <p className='psee'>Click a user to see details</p>
+               )}
               </div>
             )}
+             
+      
             
           </div>
         </div>
