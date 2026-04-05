@@ -9,6 +9,7 @@ function App() {
   const [loggedUser, setLoggedUser] = useState("");
   const [page, setPage] = useState("dashboard");
   const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
   const handleLogin=()=>{
      if(!email || !password){
       setError("Please fill the fields first");
@@ -33,6 +34,7 @@ function App() {
     const res=await fetch("https://jsonplaceholder.typicode.com/users");
     const data=await res.json();
     setUsers(data);
+    setLoading(false);
   }
   
   return (
@@ -62,17 +64,22 @@ function App() {
                 <h2>Status: Active</h2>
               </div>
             )}
+           
             {page ==="users" &&(
               <div>
+                <div className='usersContainer'>
              { users.map(user => (
-                <div key={user.id}>
-                <p>{user.name}</p>
-                <p>{user.emial}</p>
+                <div className="card" key={user.id}>
+                   
+                <h3>{user.name}</h3>
+                <p>{user.email}</p>
                 </div>
-               ))
-            }
+               
+               ))}
+             </div>
               </div>
             )}
+            
           </div>
         </div>
         

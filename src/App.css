@@ -9,10 +9,9 @@
 }
 
 .dashb {
-  margin-top:90px;
-  color: black;
-  font-size: 24px;
-  text-align: center;
+  margin-bottom:10px;
+  font-size: 26px;
+  color:#2f3542;
 }
 
 .inpu{
@@ -30,26 +29,71 @@
   box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
 }
 .butn{
- width: 100%;
-  padding: 12px;
-  background: #667eea;
-  color: white;
-  border: none;
+ //width: 100%;
+ text-align:left;
+ background:transparent;
+  padding: 12px 14px;
+  color: #cbd5e1;
+  border:none;
   border-radius: 8px;
   cursor: pointer;
   font-size: 16px;
-  transition: 0.3s;
+  transition: 0.2s ;
 }
 .butn:hover{
     background: #5a67d8;
-  transform: translateY(-2px);
+    color:white;
+  transform: translateX(4px);
 }
 .butn:active {
-  transform: scale(0.98);
+  background:#4f46e5;
+  color:white;
 }
-.sidebar{
-  display:flex;
+.sidebar {
+  width: 240px;
+  height: 100vh;
+  background: #111827;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 10px;
+}
+.sidebar.btun{
+  margin-top:auto;
+  background:#ef4444;
+  color:white;
+  border-radius:10px;
+}
+.sidebar.btun:hover{
+  background:#e84118;
 }
 .main{
+  flex:1;
+  padding:40px;
+  background:#f1f2f6;
+  overflow-y:auto;
+}
+.dashboard{
   display:flex;
+  height:100vh;
+  overflow:hidden;
+  background:#f3f4f6;
+}
+.card {
+  background: white;
+  padding: 15px 18px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+.usersContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 10px;
 }
