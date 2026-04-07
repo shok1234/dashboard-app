@@ -114,3 +114,24 @@
   border:2px solid #5a67d8;
   background:#eef2ff;
 }
+input {
+  padding: 10px;
+  margin-bottom: 15px;
+  width: 100%;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.usersLayout {
+  display: flex;
+  gap: 20px;
+}
+
+.usersList {
+  flex: 1;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.userDetails {
+  flex: 1;
+}
